@@ -13,6 +13,9 @@ final class King extends Piece {
 final class Queen extends Piece {
 }
 
+final class Bishop extends Piece {
+}
+
 final class Rook extends Piece {
 }
 
