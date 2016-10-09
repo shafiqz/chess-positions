@@ -78,4 +78,45 @@ object MovementGenerator {
      Position(position.x - 1, position.y - 2) ::
      List()).filter(withinChessBoard(boardWidth, boardHeight))
   }
+
+  def kingMoves(position: Position, boardWidth: Int, boardHeight: Int) : List[Position] = {
+
+    (Position(position.x, position.y + 1) ::
+     Position(position.x - 1, position.y + 1) ::
+     Position(position.x - 1, position.y) ::
+     Position(position.x - 1, position. y - 1) ::
+     Position(position.x, position. y - 1) ::
+     Position(position.x + 1, position. y - 1) ::
+     Position(position.x + 1, position. y) ::
+     Position(position.x + 1, position. y + 1) ::
+     List()).filter(withinChessBoard(boardWidth, boardHeight))
+  }
+
+  def queenMoves(position: Position, boardWidth: Int, boardHeight: Int) : List[Position] = {
+
+    (topToBottom(position, boardWidth, boardHeight) ++
+     upperLeft(position, boardWidth, boardHeight) ++
+     leftToRight(position, boardWidth, boardHeight) ++
+     lowerLeft(position, boardWidth, boardHeight) ++
+     leftToRight(position, boardWidth, boardHeight) ++
+     lowerRight(position, boardWidth, boardHeight) ++
+     upperRight(position, boardWidth, boardHeight)
+    ).filter(withinChessBoard(boardWidth, boardHeight))
+  }
+
+  def rookMoves(position: Position, boardWidth: Int, boardHeight: Int) : List[Position] = {
+
+    (topToBottom(position, boardWidth, boardHeight) ++
+     leftToRight(position, boardWidth, boardHeight)
+    ).filter(withinChessBoard(boardWidth, boardHeight))
+  }
+
+  def bishopMoves(position: Position, boardWidth: Int, boardHeight: Int) : List[Position] = {
+
+    (upperLeft(position, boardWidth, boardHeight) ++
+     lowerLeft(position, boardWidth, boardHeight) ++
+     lowerRight(position, boardWidth, boardHeight) ++
+     upperRight(position, boardWidth, boardHeight)
+     ).filter(withinChessBoard(boardWidth, boardHeight))
+  }
 }

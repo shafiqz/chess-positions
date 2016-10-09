@@ -80,4 +80,20 @@ class MovementGeneratorSpec extends FlatSpec with Matchers {
     assert(mg.knightMoves(Position(1, 3), 3, 3)
              .equals(Position(3, 2)::Position(2, 1)::List()))
   }
+
+  "a king" should " move only one square" in {
+
+    val p = Position(3, 3)
+
+    val expected = Position(3,4) ::
+                   Position(2,4) ::
+                   Position(2,3) ::
+                   Position(2,2) ::
+                   Position(3,2) ::
+                   Position(4,2) ::
+                   Position(4,3) ::
+                   Position(4,4) :: List()
+
+    assert(mg.kingMoves(p, 5, 5).equals(expected))
+  }
 }
