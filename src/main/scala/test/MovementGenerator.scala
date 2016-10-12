@@ -98,7 +98,6 @@ object MovementGenerator {
      upperLeft(position, boardWidth, boardHeight) ++
      leftToRight(position, boardWidth, boardHeight) ++
      lowerLeft(position, boardWidth, boardHeight) ++
-     leftToRight(position, boardWidth, boardHeight) ++
      lowerRight(position, boardWidth, boardHeight) ++
      upperRight(position, boardWidth, boardHeight)
     ).filter(withinChessBoard(boardWidth, boardHeight))
