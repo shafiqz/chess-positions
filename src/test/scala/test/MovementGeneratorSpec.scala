@@ -81,7 +81,7 @@ class MovementGeneratorSpec extends FlatSpec with Matchers {
              .equals(Position(3, 2)::Position(2, 1)::List()))
   }
 
-  "a king" should " move only one square" in {
+  "a king" should " move only one square in any direction" in {
 
     val p = Position(3, 3)
 
@@ -95,5 +95,28 @@ class MovementGeneratorSpec extends FlatSpec with Matchers {
                    Position(4,4) :: List()
 
     assert(mg.kingMoves(p, 5, 5).equals(expected))
+  }
+
+  "a queen" should "move in any direction across the board" in {
+
+    var p = new Position(3, 3)
+
+    var expected = List(Position(3,1),
+                        Position(3,2),
+                        Position(1,3),
+                        Position(2,3),
+                        Position(2,2),
+                        Position(1,1))
+
+    assert(mg.queenMoves(p, 3, 3).equals(expected))
+
+    p = new Position(2, 2)
+    expected = List(Position(2,1), Position(2,3), Position(1,3),
+                    Position(1,2), Position(3,2), Position(1,1),
+                    Position(3,1), Position(3,3))
+    assert(mg.queenMoves(p, 3, 3).equals(expected))
+
+    p = new Position(3, 2)
+    System.out.println(mg.queenMoves(p, 3, 3))
   }
 }
