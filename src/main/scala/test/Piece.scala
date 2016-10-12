@@ -13,33 +13,33 @@ sealed trait Piece {
   List[Position]
 }
 
-final class King extends Piece {
+object King extends Piece {
 
   override
   def movablePositions(position: Position, boardWith: Int, boardHeight: Int):
   List[Position] = mg.kingMoves(position, boardWith, boardHeight);
 }
 
-final class Queen extends Piece {
+object Queen extends Piece {
 
   override
   def movablePositions(position: Position, boardWith: Int, boardHeight: Int):
   List[Position] = mg.queenMoves(position, boardWith, boardHeight)
 }
 
-final class Bishop extends Piece {
+object Bishop extends Piece {
   override
   def movablePositions(position: Position, boardWith: Int, boardHeight: Int):
   List[Position] = mg.bishopMoves(position, boardWith, boardHeight)
 }
 
-final class Rook extends Piece {
+object Rook extends Piece {
   override
   def movablePositions(position: Position, boardWith: Int, boardHeight: Int):
   List[Position] = mg.rookMoves(position, boardWith, boardHeight)
 }
 
-final class Knight extends Piece {
+object Knight extends Piece {
 
   override
   def movablePositions(position: Position, boardWith: Int, boardHeight: Int):
