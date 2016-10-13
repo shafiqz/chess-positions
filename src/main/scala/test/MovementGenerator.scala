@@ -2,6 +2,7 @@ package test
 
 /**
   * Created by saz on 10/8/2016.
+  * Generates the possible squares a piece can move to from a given position.
   */
 object MovementGenerator {
 
