@@ -1,13 +1,13 @@
 package test
 
-import scala.annotation.tailrec
-import scala.collection.GenSeq
-import scala.collection.mutable.ListBuffer
+import scala.collection.parallel.ParSet
 
 /**
   * Created by saz on 10/7/2016.
   */
 object Chess {
+
+  implicit val posOrdering = new PositionOrdering
 
   /**
     * Check to see if a piece can safely occupy a square on the board.
@@ -20,7 +20,7 @@ object Chess {
     * @param square Square a piece wants to occupy.
     * @param occupied List of positions already occupied by the piece.
     * @param attackable List of squares that is attacked by the pieces of
-    *                   {@param occupied}
+    *                   occupied
     * @param boardWidth Width of the board
     * @param boardHeight Height of the board.
     * @return True if it is safe to place the piece there. False otherwise.
@@ -115,70 +115,22 @@ object Chess {
     } yield { Position(col, row) }
   }
 
-  @tailrec
-  def solve(pieces: List[Piece],            occupied: List[Placement],
-            boardPositions: List[Position], attackable: List[Position],
-            boardWidth: Int,                boardHeight: Int) :
-  List[List[Placement]] = {
+   def sortByPosition(left: Placement, right: Placement) : Boolean = {
 
-    if (pieces.isEmpty) {
-      return List(occupied)
-    }
-
-    if (boardPositions.isEmpty) {
-      return List()
-    }
-
-    val aPiece    = pieces.head
-    val square    = boardPositions.head
-    val candidate = Placement(aPiece, square)
-    if (!safeToPlace(candidate,  occupied,   attackable,
-                     boardWidth, boardHeight)) {
-
-      solve(pieces,     occupied,   boardPositions.tail,
-            attackable, boardWidth, boardHeight)
-    }
-    else {
-      val movablePositions = candidate.piece.movablePositions(candidate.position, boardWidth, boardHeight)
-      solve(pieces.tail,    occupied ++ List(candidate),
-            boardPositions, attackable ++ movablePositions,
-            boardWidth,     boardHeight)
-    }
-  }
-
-  def same(left: List[Placement], right: List[Placement]): Boolean = {
-
-    if (left.size != right.size) {
-      return false
-    }
-
-    left.intersect(right).size == left.size
-  }
-
-  @tailrec
-  def removeDuplicate(lst: GenSeq[List[Placement]], acc: ListBuffer[List[Placement]]): List[List[Placement]] = {
-
-    if (lst.isEmpty) {
-      return acc.toList
-    }
-
-    val head = lst.head
-    val filtered = lst.filter(p => { !same(p, head) })
-
-    removeDuplicate(filtered, acc :+ head)
+    left.position < right.position
   }
 
   def solve2(piecesToPut:List[Piece], occupied: List[Placement],
-             freeSquares: List[Position], attackable : List[Position],
-             boardWidth: Int, boardHeight: Int): List[List[Placement]] = {
+             freeSquares: Set[Position], attackable : List[Position],
+             boardWidth: Int, boardHeight: Int): Set[List[Placement]] = {
 
 
     if (piecesToPut.isEmpty) {
-      return List(occupied)
+      return Set(occupied.sortWith(sortByPosition))
     }
 
     if (freeSquares.isEmpty) {
-      return List()
+      return Set()
     }
 
     val aPiece = piecesToPut.head
@@ -197,7 +149,7 @@ object Chess {
       val movablePositions = candidate.piece.movablePositions(candidate.position, boardWidth, boardHeight)
       val newAttackable    = attackable ++ movablePositions
       val newFreeSquares   = freeSquares.filter( fSquare => { !newAttackable.contains(fSquare) && !(fSquare == aSquare) } )
-      solve2(piecesToPut.tail, occupied ++ List(candidate),
+      solve2(piecesToPut.tail, (occupied ++ List(candidate)).sortBy(_.position),
              newFreeSquares,   newAttackable,
              boardWidth,       boardHeight)
     })
@@ -205,13 +157,13 @@ object Chess {
 
   def compute(kings: Int,   queens: Int,  rooks: Int,
               bishops: Int, knights: Int, boardWith: Int,
-              boardHeight: Int) : List[List[Placement]] = {
+              boardHeight: Int) : ParSet[List[Placement]] = {
 
-    val boardSquares = generateBoardPositions(boardWith, boardHeight)
+    val boardSquares = generateBoardPositions(boardWith, boardHeight).toSet
     val parSquares   = boardSquares.par
     val allPieces    = generatePieces(kings, queens, rooks, bishops, knights)
 
-    val answers = parSquares.flatMap( square => {
+    parSquares.flatMap( square => {
       val aPiece      = allPieces.head
       val placement   = Placement(aPiece, square)
       val attackable  = aPiece.movablePositions(square, boardWith, boardHeight)
@@ -222,6 +174,5 @@ object Chess {
              attackable,      boardWith,      boardHeight)
     })
 
-    removeDuplicate(answers, ListBuffer())
   }
 }
