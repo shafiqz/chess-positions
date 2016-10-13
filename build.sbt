@@ -1,4 +1,4 @@
-name := """hello-scala"""
+name := """scalac-chess-test"""
 
 version := "1.0"
 
