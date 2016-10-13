@@ -8,3 +8,4 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 
 
 fork in run := true
+javaOptions in run  ++= Seq( "-Xms3g", "-Xmx5g", "-Xss3096k")
