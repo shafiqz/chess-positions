@@ -47,7 +47,37 @@ class ChessSpec extends FlatSpec with Matchers {
      assert(size == 40)
    }
 
-  /*
+  "2 kings, 2 queens, 2 bishops, 1 knight in a 5x5 board " should " have 8 answers" in {
+
+    val start = System.currentTimeMillis()
+    val answers = Chess.compute(2, 2, 0, 2, 1, 5, 5)
+    val end = System.currentTimeMillis()
+
+    println("Time taken: " + (end - start) / 1000 + " seconds")
+    assert(answers.size == 8)
+  }
+
+  "2 kings, 2 queens, 2 bishops, 1 knight in a 6x6 board " should " have 23752 answers" in {
+
+    val start = System.currentTimeMillis()
+    val answers = Chess.compute(2, 2, 0, 2, 1, 6, 6)
+    val end = System.currentTimeMillis()
+
+    println("Time taken: " + (end - start) / 1000 + " seconds")
+    assert(answers.size == 23752)
+  }
+
+/*
+  "2 kings, 2 queens, 2 bishops, 1 knight in a 7x7 board " should " have 3063828 answers" in {
+
+    val start = System.currentTimeMillis()
+    val answers = Chess.compute(2, 2, 0, 2, 1, 7, 7)
+    val end = System.currentTimeMillis()
+
+    println("Time taken: " + (end - start) / 1000 + " seconds")
+    assert(answers.size == 3063828)
+  }
+
   "8 queens in a 8x8 board" should " have 92 answers" in {
 
     val start = System.currentTimeMillis()
