@@ -115,8 +115,5 @@ class MovementGeneratorSpec extends FlatSpec with Matchers {
                     Position(1,2), Position(3,2), Position(1,1),
                     Position(3,1), Position(3,3))
     assert(mg.queenMoves(p, 3, 3).equals(expected))
-
-    p = new Position(3, 2)
-    System.out.println(mg.queenMoves(p, 3, 3))
   }
 }
