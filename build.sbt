@@ -6,7 +6,7 @@ scalaVersion := "2.11.8"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 
-scalacOptions += Seq("-optimise")
+scalacOptions ++= Seq("-optimise")
 mainClass in (Compile,run) :=  Some("Main")
 
 fork in run := true
