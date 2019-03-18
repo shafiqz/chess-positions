@@ -14,8 +14,9 @@ object Main {
 
     println("Time taken: " + (end - start) / 1000 + " seconds")
     println("No of solutions: " + answers.size)
+    println("Showing first three solutions:")
 
     answers.take(3)
-           .foreach( oneSolution => println(oneSolution + "\n\n"))
+           .foreach( oneSolution => { println("* -- " + oneSolution + "\n\n") })
   }
 }
